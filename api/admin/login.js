@@ -1,0 +1,1 @@
+module.exports=async(req,res)=>{if(req.method!=="POST")return res.status(405).json({error:"Método não permitido"});if(!process.env.STAFF_PIN)return res.status(500).json({error:"Configure STAFF_PIN na Vercel"});if(String(req.body?.pin||"")!==process.env.STAFF_PIN)return res.status(401).json({error:"PIN incorreto"});res.json({ok:true})};
