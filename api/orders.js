@@ -1,4 +1,3 @@
-
 const { db, staff } = require("./_db");
 
 module.exports = async (req, res) => {
@@ -54,6 +53,7 @@ module.exports = async (req, res) => {
 
           if (
             !Number.isInteger(id) ||
+            id < 1 ||
             !Number.isInteger(quantity) ||
             quantity < 1 ||
             quantity > 30
@@ -88,7 +88,6 @@ module.exports = async (req, res) => {
           chosen.push(product);
         }
 
-        // REGISTRAR PEDIDO
         const [result] = await connection.query(
           `INSERT INTO orders
             (status, total, customer_name, customer_class, notes)
@@ -101,7 +100,6 @@ module.exports = async (req, res) => {
           ]
         );
 
-        // REGISTRAR ITENS E ATUALIZAR ESTOQUE
         for (const product of chosen) {
           await connection.query(
             `INSERT INTO order_items
@@ -248,7 +246,6 @@ module.exports = async (req, res) => {
       });
     }
 
-    // MÉTODO NÃO PERMITIDO
     return res.status(405).json({
       error: "Método não permitido."
     });
